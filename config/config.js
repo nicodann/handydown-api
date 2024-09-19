@@ -14,11 +14,11 @@ module.exports = {
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
-  "production": {
+  production: {
     "username": "root",
     "password": null,
-    "database": "handydown_production",
-    "host": "127.0.0.1",
+    "database": process.env.DB_NAME,
+    "host": process.env.DATABASE_URL,
     "dialect": "postgres"
   }
 }
