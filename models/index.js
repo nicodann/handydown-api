@@ -14,7 +14,8 @@ if (env === 'development') {
   sequelize = new Sequelize(config);
 } else {
   console.log("other")
-  sequelize = new Sequelize(process.env.DATABASE_URL);
+  // sequelize = new Sequelize(process.env.DATABASE_URL);
+  sequelize = new Sequelize(config);
 }
 
 fs
