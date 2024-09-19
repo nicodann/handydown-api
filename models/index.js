@@ -14,8 +14,14 @@ if (env === 'development') {
   sequelize = new Sequelize(config);
 } else {
   console.log("other")
-  // sequelize = new Sequelize(process.env.DATABASE_URL);
-  sequelize = new Sequelize(config);
+  sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      }
+    }
+  });
 }
 
 fs
