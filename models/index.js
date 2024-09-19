@@ -8,15 +8,13 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
-console.log("config:", config)
-
 let sequelize;
 if (env === 'development') {
   console.log("config.development")
-  sequelize = new Sequelize(process.env[config.development], config);
+  sequelize = new Sequelize(config);
 } else {
   console.log("other")
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(config);
 }
 
 fs
