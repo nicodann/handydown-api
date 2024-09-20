@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "local": "nodemon -L app.js"
+    "local": "nodemon -L app.js",
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "author": "Nico Dann and Todd Demone",
   "license": "ISC",
@@ -23,7 +24,7 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.16",
-    "sequelize-cli": "^6.4.1"
+    "sequelize-cli": "^6.6.2"
   },
   "engines": {
     "node": "21.6.0"
