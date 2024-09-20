@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+// const {Umzug, SequelizeStorage} = require('umzug');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
@@ -23,6 +24,15 @@ if (env === 'development') {
     }
   });
 }
+
+// const umzug = new Umzug({
+//   migrations: {glob: '../migrations/*.js'},
+//   constext: sequelize.getQueryInterface(),
+//   storage: new SequelizeStorage({sequelize}),
+//   logger: console
+// })
+
+// await umzug.up()
 
 fs
   .readdirSync(__dirname)
