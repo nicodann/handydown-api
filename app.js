@@ -1,11 +1,13 @@
 require('dotenv').config();
 
 const express = require('express');
+const cors = require('cors');
 const cookieSession = require('cookie-session');
 const morgan = require('morgan');
 const fileUpload = require('express-fileupload');
 
 const app = express();
+app.use(cors())
 
 app.use(express.static('assets'));
 app.use(morgan('dev')); // log HTTP requests and errors to console
