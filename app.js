@@ -33,7 +33,7 @@ const startApp = async () => {
   try {
     await db.sequelize.authenticate();
     console.log('Connection has been established successfully.');
-    await db.sequelize.sync({ force: true })
+    // await db.sequelize.sync({ force: true })
     // await db.sequelize.sync()
     // migrateAndSeed(db.sequelize, db.Sequelize);
     // console.log('All models have been (re)created!')

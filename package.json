@@ -8,7 +8,7 @@
     "start": "node app.js",
     "local": "nodemon -L app.js",
     "seed": "npx sequelize-cli db:seed:all",
-    "no_build": "sequelize db:seed:all --config ./config/config.js"
+    "build": "sequelize db:seed:all --config ./config/config.js"
   },
   "author": "Nico Dann and Todd Demone",
   "license": "ISC",
