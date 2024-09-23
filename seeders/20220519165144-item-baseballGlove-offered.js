@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('items', [{
       name: "Baseball Glove",
       description: "The Mizuno MVP Prime SE series is the ideal glove choice for players looking to advance their game, while adding a little swagger with pro-style color pop to their glove.",
-      image: "http://localhost:8080/images/glove2.jpg",
+      image: "/images/glove2.jpg",
       userId: 1,
       offered: true,
       delivered: false,

@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('items', [{
       name: "Football",
       description: "I need a new football since my friend Milhouse accidentally dropped my other one off a bridge.",
-      image: "http://localhost:8080/images/wanted-adTwo.png",
+      image: "''/images/wanted-adTwo.png",
       userId: 7,
       offered: false,
       delivered: false,
