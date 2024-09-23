@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('items', [{
       name: "Tethered swimming belt",
       description: "Principal Skinner says I have to do tethered swimming as my gym activity even though I don't wanna do tethered swimming.",
-      image: "''/images/wanted-adTwo.png",
+      image: "/images/wanted-adTwo.png",
       userId: 6,
       offered: false,
       delivered: false,

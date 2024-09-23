@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert('items', [{
       name: "Baseball Bat",
       description: "Rawlins 2020 Raptor baseball bat, size 10 youth.  Slightly used condition.  Sat in our shed mostly.",
-      image: "''/images/bat3.jpg",
+      image: "/images/bat3.jpg",
       userId: 1,
       offered: true,
       delivered: false,
