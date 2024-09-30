@@ -115,7 +115,7 @@ exports.create = async (req, res) => {
 };
 
 exports.update = async (req,res) => {
-  // console.log("req.body", req.body)
+  console.log("req.body", req.body)
   // console.log("offered", req.body.offered, typeof req.body.offered)
   const { id, name, description, userId } = req.body
   const offered = str2bool(req.body.offered);
