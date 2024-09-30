@@ -34,7 +34,7 @@ exports.index = async (req, res) => {
 };
 
 exports.show = async (req, res) => {
-  console.log(req.params)
+  console.log("req params:",req.params)
   const id = req.params.user_id;
   try {
     const data = await Item.findAll({where:{userId: id} })
@@ -80,6 +80,7 @@ exports.create = async (req, res) => {
   //create
   console.log('imageFile?', imageFile, typeof imageFile)
   console.log('offered?', offered, typeof offered)
+  // image = `/images/balls-in-a-bin.jpg`;
   let image;
   if (  imageFile === undefined && offered === true) {
     image = `/images/balls-in-a-bin.jpg`;
@@ -104,6 +105,7 @@ exports.create = async (req, res) => {
   // console.log(Item)
   //save
   try {
+    console.log("item:", item)
     data = await Item.create(item);
     const itemPlusUser = await Item.findByPk(data.dataValues.id, { include: User });
     res.json(itemPlusUser);
