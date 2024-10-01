@@ -1,8 +1,10 @@
+const verifyToken = require("../middleware/authMiddleware.js");
+
 module.exports = app => {
   const users = require("../controllers/user.controller.js");
   const router = require("express").Router();
 
-  router.get("/:id", users.show);
+  router.get("/:id", verifyToken, users.show);
 
   router.post("/", users.create);
 

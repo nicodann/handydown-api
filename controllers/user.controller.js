@@ -59,8 +59,9 @@ exports.login = async (req,res) => {
     } else if (!bcrypt.compareSync(password, user.password)) {
       res.status(403).send("Error: the password is incorrect.");
     } else {
+      console.log("user.id:",user.id)
       req.session.userID = user.id;
-      const token = jwt.sign({ userId: user.id}, 'your-secret-key', {expiresIn: '1hr'})
+      const token = jwt.sign({ userId: user.id}, 'secret', {expiresIn: '1hr'})
       // res.json(user)
       res.status(200).json({ token });
       // res.redirect("/");

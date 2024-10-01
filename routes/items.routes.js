@@ -8,16 +8,16 @@ module.exports = app => {
   router.get("/", items.index);
 
   // Retrieve user's items
-  router.get("/:user_id", verifyToken ,items.show);
+  router.get("/:user_id", verifyToken, items.show);
 
   // Create a new Item
-  router.post("/", verifyToken ,items.create);
+  router.post("/", verifyToken, items.create);
 
   // Update Item with id
-  router.put("/:id", verifyToken ,items.update);
+  router.put("/:id", verifyToken, items.update);
 
   // Delete a Item with id
-  router.delete("/:id", verifyToken ,items.destroy);
+  router.delete("/:id", verifyToken, items.destroy);
 
   app.use('/api/items', router);
 };
