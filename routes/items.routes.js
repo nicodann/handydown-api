@@ -1,3 +1,5 @@
+const verifyToken = require('../middleware/authMiddleware.js')
+
 module.exports = app => {
   const items = require("../controllers/item.controller.js");
   const router = require("express").Router();
@@ -6,16 +8,16 @@ module.exports = app => {
   router.get("/", items.index);
 
   // Retrieve user's items
-  router.get("/:user_id", items.show);
+  router.get("/:user_id", verifyToken ,items.show);
 
   // Create a new Item
-  router.post("/", items.create);
+  router.post("/", verifyToken ,items.create);
 
   // Update Item with id
-  router.put("/:id", items.update);
+  router.put("/:id", verifyToken ,items.update);
 
   // Delete a Item with id
-  router.delete("/:id", items.destroy);
+  router.delete("/:id", verifyToken ,items.destroy);
 
   app.use('/api/items', router);
 };

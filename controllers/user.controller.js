@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const db = require("../models");
 const User = db.user;
 const Op = db.Sequelize.Op; //maybe use if more routes
+const jwt = require('jsonwebtoken');
 
 exports.create = async (req,res) => {
   //validate
@@ -59,7 +60,9 @@ exports.login = async (req,res) => {
       res.status(403).send("Error: the password is incorrect.");
     } else {
       req.session.userID = user.id;
-      res.json(user)
+      const token = jwt.sign({ userId: user.id}, 'your-secret-key', {expiresIn: '1hr'})
+      // res.json(user)
+      res.status(200).json({ token });
       // res.redirect("/");
     }
   } catch (err) {
