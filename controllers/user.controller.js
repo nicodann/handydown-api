@@ -63,7 +63,7 @@ exports.login = async (req,res) => {
       req.session.userID = user.id;
       const token = jwt.sign({ userId: user.id}, 'secret', {expiresIn: '1hr'})
       // res.json(user)
-      res.status(200).json({ token });
+      res.status(200).json({ user, token });
       // res.redirect("/");
     }
   } catch (err) {
