@@ -8,6 +8,7 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
+const {Umzug, SequelizeStorage} = require('umzug')
 
 let sequelize;
 if (env === 'development') {
@@ -25,14 +26,22 @@ if (env === 'development') {
   });
 }
 
-// const umzug = new Umzug({
-//   migrations: {glob: '../migrations/*.js'},
-//   constext: sequelize.getQueryInterface(),
-//   storage: new SequelizeStorage({sequelize}),
-//   logger: console
-// })
+const umzug = new Umzug({
+  migrations: {glob: '../migrations/*.js'},
+  // context: sequelize.getQueryInterface(),
+  storage: new SequelizeStorage({ sequelize }),
+  logger: console
+})
 
-// await umzug.up()
+// Function to run migrations
+const runMigrations = async () => {
+  try {
+    await umzug.up();
+    console.log('Migrations executed successfully.');
+  } catch (error) {
+    console.error('Error executing migrations:', error);
+  }
+};
 
 fs
   .readdirSync(__dirname)
@@ -53,4 +62,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+module.exports = { ...db, runMigrations };
