@@ -3,61 +3,44 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-// const {Umzug, SequelizeStorage} = require('umzug');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 const {Umzug, SequelizeStorage} = require('umzug');
-const { queryObjects } = require('v8');
-
-console.log("config:", config)
-
-// let sequelize;
-// if (env === 'development') {
-//   console.log("config.development")
-//   sequelize = new Sequelize(config);
-// } else {
-//   console.log("other")
-//   sequelize = new Sequelize(process.env.DATABASE_URL, {
-//     dialectOptions: {
-//       ssl: {
-//         require: true,
-//         rejectUnauthorized: false,
-//       }
-//     }
-//   });
-// }
 
 const sequelize = new Sequelize(config)
 
 const migrationsGlob = path.join(__dirname, '../migrations/*.js')
 console.log("migrationsGlob:",migrationsGlob)
 
+// With help from: https://github.com/sequelize/umzug/issues/488
+
 const umzug = new Umzug({
-  migrations: { glob: migrationsGlob },
+  migrations: { 
+    glob: migrationsGlob,
+    resolve: ({ name, path: migrationPath }) => {
+      const migration = require(migrationPath)
+      console.log("Loaded migration:", name)
+      return { 
+        name, 
+        up: async () => {
+          const queryInterface = sequelize.getQueryInterface();
+          console.log("Running migration:", name)
+          return  migration.up(queryInterface, Sequelize)
+        }, 
+        down: 
+          async () => {
+            const queryInterface = sequelize.getQueryInterface();
+            return migration.down(queryInterface, Sequelize) 
+          }
+      }
+    },
+  },
   // resolve: (migration) => {
   //   const migrationModule = require(migration);
   //   return migrationModule
   // },
-  resolve: ({ name, path: migrationPath }) => {
-    const migration = require(migrationPath)
-    console.log("Loaded migration:", name)
-    return { 
-      name, 
-      up: async () => {
-        const queryInterface = sequelize.getQueryInterface();
-        console.log("Running migration:", name)
-        console.log("QueryInterface:", queryInterface)
-        return  migration.up(queryInterface, Sequelize)
-      }, 
-      down: 
-        async () => {
-          const queryInterface = sequelize.getQueryInterface();
-          return migration.down(queryInterface, Sequelize) 
-        }
-    }
-  },
   // context: sequelize.getQueryInterface(),
   storage: new SequelizeStorage({ sequelize }),
   logger: console
