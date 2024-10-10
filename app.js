@@ -38,8 +38,7 @@ const startApp = async () => {
     await db.runSeeders();
     // await db.sequelize.sync({ force: true })
     // await db.sequelize.sync()
-    // migrateAndSeed(db.sequelize, db.Sequelize);
-    // console.log('All models have been (re)created!')
+    console.log('All models have been (re)created!')
     app.listen(process.env.PORT, () => {
       console.log(`HandyDown API listening on port ${process.env.PORT}`);
     });
