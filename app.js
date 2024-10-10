@@ -35,6 +35,7 @@ const startApp = async () => {
     console.log('Connection has been established successfully.');
 
     await db.runMigrations();
+    await db.runSeeders();
     // await db.sequelize.sync({ force: true })
     // await db.sequelize.sync()
     // migrateAndSeed(db.sequelize, db.Sequelize);
