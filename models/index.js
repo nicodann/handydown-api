@@ -3,36 +3,97 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-// const {Umzug, SequelizeStorage} = require('umzug');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
+const {Umzug, SequelizeStorage} = require('umzug');
 
-let sequelize;
-if (env === 'development') {
-  console.log("config.development")
-  sequelize = new Sequelize(config);
-} else {
-  console.log("other")
-  sequelize = new Sequelize(process.env.DATABASE_URL, {
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
+const sequelize = new Sequelize(config)
+
+const migrationsGlob = path.join(__dirname, '../migrations/*.js')
+const seedersGlob = [path.join(__dirname, '../seeders/*.js')]
+console.log("migrationsGlob:",migrationsGlob)
+
+// With help from: https://github.com/sequelize/umzug/issues/488
+
+const umzugMigrations = new Umzug({
+  migrations: { 
+    glob: migrationsGlob,
+    resolve: ({ name, path: migrationPath }) => {
+      const migration = require(migrationPath)
+      console.log("Loaded migration:", name)
+      return { 
+        name, 
+        up: async () => {
+          const queryInterface = sequelize.getQueryInterface();
+          console.log("Running migration:", name)
+          return  migration.up(queryInterface, Sequelize)
+        }, 
+        down: 
+          async () => {
+            const queryInterface = sequelize.getQueryInterface();
+            return migration.down(queryInterface, Sequelize) 
+          }
       }
+    },
+  },
+  storage: new SequelizeStorage({ sequelize }),
+  logger: console
+})
+
+const runMigrations = async () => {
+  try {
+    const executedMigrations = await umzugMigrations.up();
+
+    if (executedMigrations.length === 0) {
+      console.log('No migrations were executed.');
+    } else {
+      console.log(`Executed migrations: ${executedMigrations.map(m => m.name).join(', ')}`);
     }
-  });
-}
+  } catch (error) {
+    console.error('Error executing migrations:', error);
+  }
+};
 
-// const umzug = new Umzug({
-//   migrations: {glob: '../migrations/*.js'},
-//   constext: sequelize.getQueryInterface(),
-//   storage: new SequelizeStorage({sequelize}),
-//   logger: console
-// })
+const umzugSeeders = new Umzug({
+  migrations: { 
+    glob: seedersGlob,
+    resolve: ({ name, path: migrationPath }) => {
+      const migration = require(migrationPath)
+      console.log("Loaded seeder:", name)
+      return { 
+        name, 
+        up: async () => {
+          const queryInterface = sequelize.getQueryInterface();
+          console.log("Running seeder:", name)
+          return  migration.up(queryInterface, Sequelize)
+        }, 
+        down: 
+          async () => {
+            const queryInterface = sequelize.getQueryInterface();
+            return migration.down(queryInterface, Sequelize) 
+          }
+      }
+    },
+  },
+  storage: new SequelizeStorage({ sequelize }),
+  logger: console
+})
 
-// await umzug.up()
+const runSeeders = async () => {
+  try {
+    const executedSeeders = await umzugSeeders.up();
+
+    if (executedSeeders.length === 0) {
+      console.log('No Seeders were executed.');
+    } else {
+      console.log(`Executed Seeders: ${executedSeeders.map(m => m.name).join(', ')}`);
+    }
+  } catch (error) {
+    console.error('Error executing seeders:', error);
+  }
+};
 
 fs
   .readdirSync(__dirname)
@@ -53,4 +114,4 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+module.exports = { ...db, runMigrations, runSeeders };
