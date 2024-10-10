@@ -23,9 +23,11 @@ exports.create = async (req,res) => {
     location
   }
   try {
-    const user =  await User.create(userData);
-    req.session.userID = user.id;
-    res.json(user);
+    res.send('User registration disabled')
+    // Logic to register/create new user
+    // const user =  await User.create(userData);
+    // req.session.userID = user.id;
+    // res.json(user);
   } catch (err) {
       res.status(500).send({
         message: err.message || "An error occured while creating the User."
