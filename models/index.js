@@ -13,7 +13,6 @@ const sequelize = new Sequelize(config)
 
 const migrationsGlob = path.join(__dirname, '../migrations/*.js')
 const seedersGlob = [path.join(__dirname, '../seeders/*.js')]
-console.log("migrationsGlob:",migrationsGlob)
 
 // With help from: https://github.com/sequelize/umzug/issues/488
 
