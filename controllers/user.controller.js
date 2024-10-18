@@ -76,35 +76,35 @@ exports.login = async (req,res) => {
   
 };
 
-// exports.logged_in = async (req, res) => {
-//   const loggedInUserId = req.session.userID;
-//   console.log ("loggedInUserId", loggedInUserId)
-//   if (!loggedInUserId) {
-//     return res.status(401).send("User is not logged in")
-//   }
+exports.logged_in = async (req, res) => {
+  const loggedInUserId = req.session.userID;
+  console.log ("loggedInUserId", loggedInUserId)
+  if (!loggedInUserId) {
+    return res.status(401).send("User is not logged in")
+  }
 
-//   //authenticate
-//   try {
-//     const user = await User.findOne({
-//       where: {
-//         id: loggedInUserId
-//       }
-//     });
-//     console.log("found:", user)
-//     res.status(200).send(user);
-//   } catch (err) {
-//     res.status(500).send(err);
-//   }
-// };
+  //authenticate
+  try {
+    const user = await User.findOne({
+      where: {
+        id: loggedInUserId
+      }
+    });
+    console.log("found:", user)
+    res.status(200).send(user);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+};
  
-// exports.logout =  (req, res) => {
-//   try {
-//     req.session = null;
-//     res.status(200).send("User is logged out")
-//   } catch (err) {
-//     res.status(500).send(err.message)
-//   }
-// };
+exports.logout =  (req, res) => {
+  try {
+    req.session = null;
+    res.status(200).send("User is logged out")
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
+};
 
 // exports.create = (req,res) => {
 //   //validate
