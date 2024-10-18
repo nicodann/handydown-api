@@ -63,7 +63,7 @@ exports.login = async (req,res) => {
     } else {
       console.log("user.id:",user.id)
       req.session.userID = user.id;
-      const token = jwt.sign({ userId: user.id}, 'secret', {expiresIn: '1hr'})
+      const token = jwt.sign({ userId: user.id}, process.env.JWT_SECRET, {expiresIn: '1hr'})
       // res.json(user)
       res.status(200).json({ user, token });
       // res.redirect("/");

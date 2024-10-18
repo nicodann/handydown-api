@@ -2,7 +2,6 @@
 const bcrypt = require('bcrypt');
 
 const hashedPass = bcrypt.hashSync(process.env.ND_PASSWORD, 10);
-// const hashedPass = bcrypt.hashSync('secret', 10);
 
 const ndpass = 
 
